@@ -859,12 +859,17 @@ function App() {
     // Convert JS object to XML string
     const xml = jsObjectToXml(data);
     const blob = new Blob([xml], { type: "application/xml;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
+    link.href = url;
     link.setAttribute("download", "cashbook_data.xml");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    // Fallback: open in new tab/window for WebView compatibility
+    setTimeout(() => {
+      window.open(url, "_blank");
+    }, 500);
   };
 
   // XML Import
