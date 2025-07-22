@@ -1365,8 +1365,8 @@ function App() {
                         <p className="text-base font-bold text-blue-700 mb-1">
                           {transaction.description}
                         </p>
-                        <p className="text-xs text-gray-400 mb-1">
-                          {transaction.contact || "N/A"}
+                        <p className="text-[10px] text-gray-400 mb-1">
+                          Contact: {transaction.contact}
                         </p>
                         <p className="text-xs text-gray-500 mb-1">
                           {formatDate(transaction.date)}{" "}
