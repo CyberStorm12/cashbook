@@ -508,56 +508,6 @@ function App() {
     });
   };
 
-  const importDataFromJson = (event) => {
-    const file = event.target.files[0];
-    if (!file) {
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const data = JSON.parse(e.target.result);
-        if (
-          data.books &&
-          data.transactions &&
-          data.loanBooks &&
-          data.loanTransactions
-        ) {
-          setBooks(data.books);
-          setTransactions(data.transactions);
-          setLoanBooks(data.loanBooks);
-          setLoanTransactions(data.loanTransactions);
-          alert("Data imported successfully!");
-        } else {
-          alert("Invalid JSON file format.");
-        }
-      } catch (error) {
-        alert("Error parsing JSON file: " + error.message);
-      }
-    };
-    reader.readAsText(file);
-  };
-
-  const exportDataToJson = () => {
-    const data = {
-      books,
-      transactions,
-      loanBooks,
-      loanTransactions,
-    };
-    const jsonContent = JSON.stringify(data, null, 2);
-    const blob = new Blob([jsonContent], {
-      type: "application/json;charset=utf-8;",
-    });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.setAttribute("download", "cashbook_data.json");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   const importTransactionsFromCsv = (event) => {
     const file = event.target.files[0];
     if (!file) {
@@ -897,6 +847,109 @@ function App() {
       searchTerm: "",
     });
   };
+
+  // XML Export
+  const exportDataToXml = () => {
+    const data = {
+      books,
+      transactions,
+      loanBooks,
+      loanTransactions,
+    };
+    // Convert JS object to XML string
+    const xml = jsObjectToXml(data);
+    const blob = new Blob([xml], { type: "application/xml;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", "cashbook_data.xml");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // XML Import
+  const importDataFromXml = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = xmlToJsObject(e.target.result);
+        if (
+          data.books &&
+          data.transactions &&
+          data.loanBooks &&
+          data.loanTransactions
+        ) {
+          setBooks(data.books);
+          setTransactions(data.transactions);
+          setLoanBooks(data.loanBooks);
+          setLoanTransactions(data.loanTransactions);
+          alert("Data imported successfully!");
+        } else {
+          alert("Invalid XML file format.");
+        }
+      } catch (error) {
+        alert("Error parsing XML file: " + error.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // Helper: JS object to XML string
+  function jsObjectToXml(obj) {
+    function toXml(v, name) {
+      if (Array.isArray(v)) {
+        return v.map((item) => toXml(item, name)).join("");
+      } else if (typeof v === "object" && v !== null) {
+        let inner = Object.entries(v)
+          .map(([k, val]) => toXml(val, k))
+          .join("");
+        return `<${name}>${inner}</${name}>`;
+      } else {
+        return `<${name}>${String(v)}</${name}>`;
+      }
+    }
+    return (
+      '<?xml version="1.0" encoding="UTF-8"?>' +
+      '<cashbook>' +
+      Object.entries(obj)
+        .map(([k, v]) => toXml(v, k))
+        .join("") +
+      '</cashbook>'
+    );
+  }
+
+  // Helper: XML string to JS object
+  function xmlToJsObject(xmlStr) {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlStr, "application/xml");
+    if (xml.querySelector("parsererror")) throw new Error("Invalid XML");
+    function parseNode(node) {
+      // If element has children with same tag, treat as array
+      const children = Array.from(node.children);
+      if (!children.length) return node.textContent;
+      const grouped = {};
+      for (const child of children) {
+        if (!grouped[child.tagName]) grouped[child.tagName] = [];
+        grouped[child.tagName].push(parseNode(child));
+      }
+      const result = {};
+      for (const [k, v] of Object.entries(grouped)) {
+        result[k] = v.length === 1 ? v[0] : v;
+      }
+      return result;
+    }
+    const root = xml.querySelector("cashbook");
+    if (!root) throw new Error("Missing <cashbook> root");
+    const obj = parseNode(root);
+    // Ensure arrays for top-level keys
+    for (const key of ["books", "transactions", "loanBooks", "loanTransactions"]) {
+      if (obj[key] && !Array.isArray(obj[key])) obj[key] = [obj[key]];
+      if (!obj[key]) obj[key] = [];
+    }
+    return obj;
+  }
 
   // Books view
   if (currentView === "books") {
@@ -1765,23 +1818,6 @@ function App() {
           <Button variant="outline" size="sm" onClick={clearFilters}>
             Clear
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => document.getElementById("jsonFileInput").click()}
-          >
-            JSON Import
-          </Button>
-          <input
-            type="file"
-            id="jsonFileInput"
-            accept=".json"
-            style={{ display: "none" }}
-            onChange={importDataFromJson}
-          />
-          <Button variant="outline" size="sm" onClick={exportDataToJson}>
-            JSON Export
-          </Button>
           <Select
             value={filters.dateRange}
             onValueChange={(value) =>
@@ -1814,6 +1850,23 @@ function App() {
               <SelectItem value="cash-out">Cash Out</SelectItem>
             </SelectContent>
           </Select>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => document.getElementById("xmlFileInput").click()}
+          >
+            XML Import
+          </Button>
+          <input
+            type="file"
+            id="xmlFileInput"
+            accept=".xml"
+            style={{ display: "none" }}
+            onChange={importDataFromXml}
+          />
+          <Button variant="outline" size="sm" onClick={exportDataToXml}>
+            XML Export
+          </Button>
         </div>
         <Input
           placeholder="Search transactions..."
