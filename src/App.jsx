@@ -117,7 +117,6 @@ function App() {
       setBooks(JSON.parse(savedBooks));
     }
     if (savedTransactions) {
-      // Ensure all transactions have a title and amount property
       const txs = JSON.parse(savedTransactions).map((t) => ({
         ...t,
         title: t.title || "",
@@ -129,7 +128,6 @@ function App() {
       setLoanBooks(JSON.parse(savedLoanBooks));
     }
     if (savedLoanTransactions) {
-      // Ensure all loan transactions have a title and amount property
       const ltxs = JSON.parse(savedLoanTransactions).map((t) => ({
         ...t,
         title: t.title || "",
