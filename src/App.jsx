@@ -210,7 +210,9 @@ function App() {
           (t) =>
             t.description.toLowerCase().includes(searchLower) ||
             t.contact.toLowerCase().includes(searchLower) ||
-            t.category.toLowerCase().includes(searchLower)
+            t.category.toLowerCase().includes(searchLower) ||
+            t.title.toLowerCase().includes(searchLower) ||
+            t.amount.toString().includes(searchLower)
         );
       }
 
@@ -911,7 +913,7 @@ function App() {
                   className="h-10"
                 />
                 <div>
-                  <h1 className="text-xl font-semibold text-gray-900">
+                  <h1 className="text-xl font-semibold text-blue-600">
                     CashBook by Qbexel
                   </h1>
                 </div>
@@ -948,9 +950,9 @@ function App() {
                             {book.name}
                           </h3>
                           <p className="text-sm text-gray-500">
-                            {getBookTransactions(book.id).length} entries •
-                            Updated just now
+                            {getBookTransactions(book.id).length} entries
                           </p>
+                          <p className="text-xs text-gray-400">Updated just now</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -1137,9 +1139,9 @@ function App() {
                             {loanBook.name}
                           </h3>
                           <p className="text-sm text-gray-500">
-                            {getLoanBookTransactions(loanBook.id).length}{" "}
-                            entries • Updated just now
+                            {getLoanBookTransactions(loanBook.id).length} entries
                           </p>
+                          <p className="text-xs text-gray-400">Updated just now</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -1363,7 +1365,7 @@ function App() {
                         <p className="font-bold text-gray-900 mb-1">
                           {transaction.description}
                         </p>
-                        <p className="text-sm text-gray-700 mb-1">
+                        <p className="text-xs text-gray-400 mb-1">
                           {transaction.contact || "N/A"}
                         </p>
                         <p className="text-xs text-gray-500 mb-1">
