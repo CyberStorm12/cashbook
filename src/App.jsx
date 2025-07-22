@@ -913,7 +913,7 @@ function App() {
                   className="h-10"
                 />
                 <div>
-                  <h1 className="text-xl font-semibold text-blue-600">
+                  <h1 className="text-xl font-semibold text-gray-900">
                     CashBook by Qbexel
                   </h1>
                 </div>
@@ -1360,9 +1360,9 @@ function App() {
                   onClick={() => openEditLoanTransaction(transaction)}
                 >
                   <CardContent className="p-4">
-                    <div className="flex justify-between items-start">
+                    <div className="flex justify-between items-center">
                       <div className="flex-1">
-                        <p className="font-bold text-gray-900 mb-1">
+                        <p className="font-semibold text-blue-700 mb-1">
                           {transaction.description}
                         </p>
                         <p className="text-xs text-gray-400 mb-1">
@@ -1887,9 +1887,9 @@ function App() {
                 onClick={() => openEditTransaction(transaction)}
               >
                 <CardContent className="p-4">
-                  <div className="flex justify-between items-start">
+                  <div className="flex justify-between items-center">
                     <div className="flex-1">
-                      <p className="font-bold text-gray-900 mb-1">
+                      <p className="font-semibold text-blue-700 mb-1">
                         {transaction.title}
                       </p>
                       {transaction.description && (
