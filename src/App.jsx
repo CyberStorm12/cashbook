@@ -1959,10 +1959,21 @@ function App() {
               </DialogTrigger>
               <DialogContent className="max-w-sm mx-auto">
                 <DialogHeader>
-                  <DialogTitle>
-                    Add{" "}
-                    {newTransaction.type === "cash-in" ? "Cash In" : "Cash Out"}
-                  </DialogTitle>
+                  <div className="flex items-center justify-between">
+                    <DialogTitle>
+                      Add{" "}
+                      {newTransaction.type === "cash-in" ? "Cash In" : "Cash Out"}
+                    </DialogTitle>
+                    <Button
+                      size="icon"
+                      className="ml-2 bg-green-600 hover:bg-green-700 text-white p-2 rounded-full"
+                      style={{ width: '32px', height: '32px' }}
+                      onClick={addTransaction}
+                      title="Quick Add"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
