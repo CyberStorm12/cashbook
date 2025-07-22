@@ -866,10 +866,6 @@ function App() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    // Fallback: open in new tab/window for WebView compatibility
-    setTimeout(() => {
-      window.open(url, "_blank");
-    }, 500);
   };
 
   // XML Import
