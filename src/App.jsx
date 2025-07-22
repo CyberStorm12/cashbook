@@ -1362,7 +1362,7 @@ function App() {
                   <CardContent className="p-4">
                     <div className="flex justify-between items-center">
                       <div className="flex-1">
-                        <p className="font-semibold text-blue-700 mb-1">
+                        <p className="text-base font-bold text-blue-700 mb-1">
                           {transaction.description}
                         </p>
                         <p className="text-xs text-gray-400 mb-1">
@@ -1889,11 +1889,11 @@ function App() {
                 <CardContent className="p-4">
                   <div className="flex justify-between items-center">
                     <div className="flex-1">
-                      <p className="font-semibold text-blue-700 mb-1">
+                      <p className="text-base font-bold text-blue-700 mb-1">
                         {transaction.title}
                       </p>
                       {transaction.description && (
-                        <p className="text-gray-800 mb-1">
+                        <p className="text-sm text-gray-800 mb-1">
                           {transaction.description}
                         </p>
                       )}
