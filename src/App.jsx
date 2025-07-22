@@ -1946,19 +1946,6 @@ function App() {
                   CASH IN
                 </Button>
               </DialogTrigger>
-              {/* Small Add Button */}
-              <DialogTrigger asChild>
-                <Button
-                  className="px-2 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-full flex items-center justify-center"
-                  style={{ minWidth: 0, width: '36px', height: '36px' }}
-                  onClick={() =>
-                    setNewTransaction({ ...newTransaction, type: "cash-in" })
-                  }
-                  title="Add Entry"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </DialogTrigger>
               <DialogTrigger asChild>
                 <Button
                   className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3"
