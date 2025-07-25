@@ -485,8 +485,8 @@ function App() {
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-IN", {
       style: "decimal",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
     }).format(amount);
   };
 
@@ -1498,6 +1498,7 @@ function App() {
                       <Input
                         id="amount"
                         type="number"
+                        step="0.01"
                         value={newLoanTransaction.amount}
                         onChange={(e) =>
                           setNewLoanTransaction({
@@ -1643,6 +1644,7 @@ function App() {
                   <Input
                     id="amount"
                     type="number"
+                    step="0.01"
                     value={editingLoanTransaction.amount}
                     onChange={(e) =>
                       setEditingLoanTransaction({
@@ -2034,6 +2036,7 @@ function App() {
                     <Input
                       id="amount"
                       type="number"
+                      step="0.01"
                       value={newTransaction.amount}
                       onChange={(e) =>
                         setNewTransaction({
@@ -2159,6 +2162,7 @@ function App() {
                 <Input
                   id="amount"
                   type="number"
+                  step="0.01"
                   value={editingTransaction.amount}
                   onChange={(e) =>
                     setEditingTransaction({
