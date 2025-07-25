@@ -483,9 +483,10 @@ function App() {
   }, []);
 
   const formatCurrency = (amount) => {
+    // Show up to 2 decimals, but no trailing .00
     return new Intl.NumberFormat("en-IN", {
       style: "decimal",
-      minimumFractionDigits: 2,
+      minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     }).format(amount);
   };
